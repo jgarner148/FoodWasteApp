@@ -73,6 +73,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+    implementation("io.github.raamcosta.compose-destinations:animations-core:1.7.21-beta")
+
 
 
 
