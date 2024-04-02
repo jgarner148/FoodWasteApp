@@ -1,13 +1,5 @@
 package com.example.foodwasteproject
 
-import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.navigation.NavHost
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.foodwasteproject.ui.components.BottomNavItem
-import com.example.foodwasteproject.ui.screens.calendar.CalendarScreen
 
 //@Composable
 //fun MainScreen() {
@@ -29,7 +21,7 @@ import com.example.foodwasteproject.ui.screens.calendar.CalendarScreen
 //        MainScreenNavigationConfigurations(navController)
 //    }
 //}
-
+//
 //@Composable
 //private fun MainScreenNavigationConfigurations(
 //    navController: NavHostController
@@ -38,7 +30,7 @@ import com.example.foodwasteproject.ui.screens.calendar.CalendarScreen
 ////        composable(BottomNavItem.Recipes.route) {
 //            CalendarScreen()
 //        }
-//        composable(BottomNavItem.Articles.route) {
+//        COMP(BottomNavItem.Articles.route) {
 //            CalendarScreen()
 //        }
 //        composable(BottomNavItem.Calendar.route) {
