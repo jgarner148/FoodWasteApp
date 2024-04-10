@@ -91,37 +91,6 @@ enum class BottomNavDestination(
     }
 }
 
-//@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-//@com.ramcosta.composedestinations.annotation.Destination
-//@Composable
-//fun MainBottomNavigationHost(
-//    rootNavController: DestinationsNavigator
-//) {
-//    val navController = rememberNavController()
-//    val navHostController = rememberNavHostEngine()
-//
-//    Scaffold(
-//
-//        bottomBar = {
-//            BottomBar(
-//                modifier = Modifier.navigationBarsPadding(),
-//                navController = navController
-//            )
-//        }
-//    ) {
-//        DestinationsNavHost(
-//            navController = navController,
-//            navGraph = NavGraphs.root
-////            engine = navHostController,
-////            dependenciesContainerBuilder = {
-////                dependency(NavGraphs) {
-////                    RootDestinationsNavigator(rootNavController)
-////                }
-////            }
-//        )
-//    }
-//}
-
 @Composable
 fun BottomBar(
     modifier: Modifier = Modifier.navigationBarsPadding(),
@@ -130,17 +99,17 @@ fun BottomBar(
     val currentDestination: Destination = navController.appCurrentDestinationAsState().value
         ?: NavGraphs.root.startAppDestination
 
-    BottomNavigation {
+    NavigationBar {
         BottomNavDestination.values().forEach { destination ->
-            BottomNavigationItem(
+            NavigationBarItem(
                 selected = currentDestination == destination.direction,
                 onClick = {
                     navController.navigate(destination.direction) {
                         launchSingleTop = true
                     }
                 },
-                icon = { },
-                label = { Text(stringResource(destination.label)) },
+                icon = {  },
+                label = { Text(destination.label()) },
             )
         }
     }
