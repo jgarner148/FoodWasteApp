@@ -52,9 +52,15 @@ android {
 }
 
 dependencies {
-    val nav_version = "2.7.7"
 
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    val navVersion = "2.7.7"
+
+    implementation("androidx.navigation:navigation-compose:$navVersion")
+
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
+    implementation("io.insert-koin:koin-android:3.2.0")
+    implementation("io.insert-koin:koin-androidx-compose:3.2.0")
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -78,7 +84,14 @@ dependencies {
     implementation("io.github.raamcosta.compose-destinations:core:1.10.2")
     ksp("io.github.raamcosta.compose-destinations:ksp:1.10.2")
 
+    val roomVersion = "2.6.1"
 
+    implementation("androidx.room:room-runtime:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
 
 
 }

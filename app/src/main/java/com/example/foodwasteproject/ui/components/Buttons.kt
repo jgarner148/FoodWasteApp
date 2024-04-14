@@ -1,7 +1,9 @@
 package com.example.foodwasteproject.ui.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -20,7 +22,9 @@ fun StandardButton(
     text: String,
     isActive: Boolean,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) = Button(
+    modifier = modifier,
     onClick = onClick,
     enabled = isActive,
     shape = RoundedCornerShape(15.dp),
@@ -35,6 +39,42 @@ fun StandardButton(
         fontFamily = Madimi
     )
 }
+
+@Composable
+fun TransparentRowButton(
+    onClick: () -> Unit,
+    content: @Composable RowScope.() -> Unit
+) = Button(
+    onClick = onClick,
+    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+    modifier = Modifier.padding(10.dp),
+    shape = RoundedCornerShape(0.dp),
+    content = content
+)
+
+@Composable
+fun TitleBarButton(
+    text: String,
+    isActive: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) = Button(
+    modifier = modifier,
+    onClick = onClick,
+    enabled = isActive,
+    shape = RoundedCornerShape(15.dp),
+    colors = ButtonDefaults.buttonColors(
+        containerColor = Color.White,
+        contentColor = Color.Black,
+        disabledContainerColor = Color.Gray,
+        disabledContentColor = Color.Black)
+) {
+    Text(
+        text = text,
+        fontFamily = Madimi
+    )
+}
+
 
 @Preview(name = "Standard Button Preview")
 @Composable

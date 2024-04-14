@@ -14,46 +14,54 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import androidx.room.Room
+import com.example.foodwasteproject.engine.database.LocalDatabase
+import com.example.foodwasteproject.engine.objects.ArticleDao
+import com.example.foodwasteproject.engine.objects.CalendarDao
+import com.example.foodwasteproject.engine.objects.CalendarDayDao
+import com.example.foodwasteproject.engine.viewmodels.ArticlesHomeScreenViewModel
 import com.example.foodwasteproject.ui.components.BottomBar
 import com.example.foodwasteproject.ui.components.StandardButton
 import com.example.foodwasteproject.ui.components.TileBarLeftText
-import com.example.foodwasteproject.ui.screens.calendar.NavGraphs
+import com.example.foodwasteproject.ui.screens.NavGraphs
 import com.example.foodwasteproject.ui.theme.FoodWasteProjectTheme
 import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.animations.defaults.NestedNavGraphDefaultAnimations
+import com.ramcosta.composedestinations.animations.defaults.RootNavGraphDefaultAnimations
+import com.ramcosta.composedestinations.rememberNavHostEngine
+import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.core.context.startKoin
+import org.koin.dsl.module
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val navHostEngine = rememberNavHostEngine()
             val navController = rememberNavController()
-            Scaffold(bottomBar = { BottomBar(navController = navController) }) {
-                DestinationsNavHost(navGraph = NavGraphs.root)
+            val localDatabase = Room.databaseBuilder(
+                applicationContext,
+                LocalDatabase::class.java, "database-name"
+            ).build()
+
+            startKoin{
+                modules(modules = module{
+                    single<ArticleDao>{
+                        localDatabase.articleDao()
+                    }
+                    single<CalendarDao>{
+                        localDatabase.calendarDao()
+                    }
+                    single<CalendarDayDao>{
+                        localDatabase.acalendarDayDao()
+                    }
+                    viewModel{ArticlesHomeScreenViewModel(get())}
+                })
             }
-//            FoodWasteProjectTheme {
-//                // A surface container using the 'background' color from the theme
-//                Column(
-//                    modifier = Modifier.fillMaxSize(),
-//                ) {
-//                    Greeting("Android")
-//                }
-//            }
+            Scaffold(bottomBar = { BottomBar(navController = navController) }) {
+                DestinationsNavHost(navGraph = NavGraphs.root, navController = navController, engine = navHostEngine)
+            }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    TileBarLeftText(title = "Home", subtitle = null)
-    StandardButton(text = "Test", isActive = true) {
-
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    FoodWasteProjectTheme {
-        Greeting("Android")
     }
 }

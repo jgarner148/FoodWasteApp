@@ -1,6 +1,8 @@
 package com.example.foodwasteproject.ui.components
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -20,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -27,12 +31,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.example.foodwasteproject.ui.screens.calendar.NavGraphs
-import com.example.foodwasteproject.ui.screens.calendar.appCurrentDestinationAsState
-import com.example.foodwasteproject.ui.screens.calendar.destinations.CalendarScreenDestination
-import com.example.foodwasteproject.ui.screens.calendar.destinations.Destination
-import com.example.foodwasteproject.ui.screens.calendar.startAppDestination
+import com.example.foodwasteproject.R
+import com.example.foodwasteproject.ui.screens.NavGraphs
+import com.example.foodwasteproject.ui.screens.appCurrentDestinationAsState
+import com.example.foodwasteproject.ui.screens.destinations.ArticlesHomeScreenDestination
+import com.example.foodwasteproject.ui.screens.destinations.CalendarScreenDestination
+import com.example.foodwasteproject.ui.screens.destinations.CupboardLandingScreenDestination
+import com.example.foodwasteproject.ui.screens.destinations.MeScreenDestination
+import com.example.foodwasteproject.ui.screens.destinations.RecipeListScreenDestination
+import com.example.foodwasteproject.ui.screens.destinations.TypedDestination
+import com.example.foodwasteproject.ui.screens.startAppDestination
+import com.example.foodwasteproject.ui.theme.FoodWasteGreen
 import com.ramcosta.composedestinations.DestinationsNavHost
+import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.NavGraph
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -44,50 +55,47 @@ import com.ramcosta.composedestinations.spec.Direction
 import com.ramcosta.composedestinations.spec.DirectionDestinationSpec
 import com.ramcosta.composedestinations.spec.NavGraphSpec
 
-class RootDestinationsNavigator(
-    private val navController: DestinationsNavigator
-) : DestinationsNavigator by navController
-
-@RootNavGraph
-@NavGraph
-annotation class BottomNavigationBarGraph(
-    val start: Boolean = false
-)
 
 enum class BottomNavDestination(
     val direction: DirectionDestinationSpec,
     val position: Int
 ) {
-    Calendar(
-        CalendarScreenDestination,
+    Recipes(
+        RecipeListScreenDestination,
         1
     ),
-    Budgets(
-        CalendarScreenDestination,
+    Cupboard(
+        CupboardLandingScreenDestination,
         2
     ),
-    More(
-        CalendarScreenDestination,
-        4
-    ),
-    Suppliers(
+    Calendar(
         CalendarScreenDestination,
         3
     ),
+    Articles(
+        ArticlesHomeScreenDestination,
+        4
+    ),
+    Me(
+        MeScreenDestination,
+        5
+    ),
     ;
     @Composable
-    fun icon(): ImageVector = when (this) {
-        Calendar -> ImageVector.vectorResource(id = androidx.core.R.drawable.notification_bg)
-        Budgets -> ImageVector.vectorResource(id = androidx.core.R.drawable.notification_bg)
-        Suppliers -> ImageVector.vectorResource(id = androidx.core.R.drawable.notification_bg)
-        More -> ImageVector.vectorResource(id = androidx.core.R.drawable.notification_bg)
+    fun icon(): Int = when (this) {
+        Recipes -> R.drawable.baseline_receipt_24
+        Cupboard -> R.drawable.baseline_space_dashboard_24
+        Calendar -> R.drawable.baseline_calendar_today_24
+        Articles -> R.drawable.baseline_description_24
+        Me -> R.drawable.baseline_receipt_24
     }
 
     fun label(): String = when (this) {
-        Calendar -> "Test1"
-        Budgets -> "Test2"
-        Suppliers -> "Test3"
-        More -> "Test4"
+        Recipes -> "Recipes"
+        Cupboard -> "Cupboard"
+        Calendar -> "Calendar"
+        Articles -> "Articles"
+        Me -> "Me"
     }
 }
 
@@ -96,101 +104,24 @@ fun BottomBar(
     modifier: Modifier = Modifier.navigationBarsPadding(),
     navController: NavController
 ) {
-    val currentDestination: Destination = navController.appCurrentDestinationAsState().value
-        ?: NavGraphs.root.startAppDestination
+    val currentDestination = navController.currentDestination
 
-    NavigationBar {
+    NavigationBar(
+        containerColor = FoodWasteGreen,
+        contentColor = FoodWasteGreen
+    ) {
         BottomNavDestination.values().forEach { destination ->
             NavigationBarItem(
+                modifier = modifier,
                 selected = currentDestination == destination.direction,
                 onClick = {
                     navController.navigate(destination.direction) {
                         launchSingleTop = true
                     }
                 },
-                icon = {  },
-                label = { Text(destination.label()) },
+                icon = { Image(painter = painterResource(id = destination.icon()), contentDescription = "Test") },
+                label = { Text(text =destination.label(), color = Color.White) },
             )
         }
     }
 }
-
-
-@Composable
-private fun BottomBarContent(
-    modifier: Modifier = Modifier,
-    currentDestination: Destination,
-    onBottomBarItemClick: (Direction) -> Unit
-) {
-    NavigationBar(
-        modifier = modifier
-            .height(64.dp)
-            .padding(0.dp),
-
-        ) {
-        BottomNavDestination.entries.sortedBy { it.position }.forEach { destination ->
-            val isSelected = currentDestination == destination.direction
-            val selectionColor = if (isSelected) Color.Black else Color.Red
-            Column(
-                modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                val indicatorColor = when {
-                    isSelected -> Color.Black
-                    else -> Color.Red
-                }
-                this@NavigationBar.NavigationBarItem(
-                    modifier = Modifier.fillMaxWidth(),
-                    icon = {
-                        if (destination == BottomNavDestination.Calendar) {
-                            Box {
-//                                Icon(
-//                                    modifier = Modifier.size(32.dp),
-//                                    imageVector = destination.icon(),
-//                                    contentDescription = destination.label(),
-//                                    tint = selectionColor
-//                                )
-//                                Icon(
-//                                    modifier = Modifier.size(32.dp),
-//                                    imageVector = destination.icon(),
-//                                    contentDescription = destination.label(),
-//                                )
-                            }
-                        } else {
-//                            Icon(
-//                                modifier = Modifier.size(32.dp),
-//                                imageVector = destination.icon(),
-//                                contentDescription = destination.label(),
-//                                tint = selectionColor
-//                            )
-                        }
-                    },
-                    label = {
-                        Text(
-                            text = destination.label(),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                            fontSize = 12.sp,
-                            color = selectionColor
-                        )
-                    },
-                    selected = isSelected,
-                    onClick = {
-                        onBottomBarItemClick(destination.direction)
-                    },
-
-                    )
-            }
-        }
-    }
-}
-
-
-//sealed class BottomNavItem(val route: String, val icon: ImageVector, val label: String) {
-//    data object Recipes : BottomNavItem("recipes", Icons.Default.Home, "Recipes")
-//    data object Cupboard : BottomNavItem("cupboard", Icons.Default.Home, "Cupboard")
-//    data object Calendar : BottomNavItem("calendar", Icons.Default.Home, "Calendar")
-//    data object Articles : BottomNavItem("articles", Icons.Default.Home, "Articles")
-//    data object Me : BottomNavItem("me", Icons.Default.Home, "Me")
-//}
-
