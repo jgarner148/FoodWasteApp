@@ -1,6 +1,7 @@
 package com.example.foodwasteproject.engine.viewmodels
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -40,8 +41,8 @@ class ArticlesHomeScreenViewModel(
                 subtitle = "Fail",
                 publishDate = "10/10/2020",
                 thumbnailURL = "https://picsum.photos/200",
-                bannerImageURL = "https://picsum.photos/200",
-                content = "TEST"
+                bannerImageURL = "https://picsum.photos/1920/1080",
+                content = LoremIpsum(250).values.first()
             ),
             Article(
                 id = 16,
@@ -49,8 +50,8 @@ class ArticlesHomeScreenViewModel(
                 subtitle = "Two",
                 publishDate = "10/10/2020",
                 thumbnailURL = "https://picsum.photos/200",
-                bannerImageURL = "https://picsum.photos/200",
-                content = "TEST"
+                bannerImageURL = "https://picsum.photos/1920/1080",
+                content = LoremIpsum(250).values.first()
             ),
             Article(
                 id = 17,
@@ -58,8 +59,8 @@ class ArticlesHomeScreenViewModel(
                 subtitle = "Three",
                 publishDate = "10/10/2020",
                 thumbnailURL = "https://picsum.photos/200",
-                bannerImageURL = "https://picsum.photos/200",
-                content = "TEST"
+                bannerImageURL = "https://picsum.photos/1920/1080",
+                content = LoremIpsum(250).values.first()
             ),
             Article(
                 id = 18,
@@ -67,8 +68,8 @@ class ArticlesHomeScreenViewModel(
                 subtitle = "Four",
                 publishDate = "10/10/2020",
                 thumbnailURL = "https://picsum.photos/200",
-                bannerImageURL = "https://picsum.photos/200",
-                content = "TEST"
+                bannerImageURL = "https://picsum.photos/1920/1080",
+                content = LoremIpsum(250).values.first()
             )
         )
     }

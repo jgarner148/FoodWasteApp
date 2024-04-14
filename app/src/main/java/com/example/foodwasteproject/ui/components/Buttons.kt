@@ -2,7 +2,6 @@ package com.example.foodwasteproject.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -41,7 +40,7 @@ fun StandardButton(
 }
 
 @Composable
-fun TransparentRowButton(
+fun TransparentButton(
     onClick: () -> Unit,
     content: @Composable RowScope.() -> Unit
 ) = Button(
