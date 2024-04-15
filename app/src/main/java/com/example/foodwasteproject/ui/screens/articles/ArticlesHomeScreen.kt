@@ -3,6 +3,7 @@ package com.example.foodwasteproject.ui.screens.articles
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -61,7 +62,7 @@ fun ArticlesHomeScreenContent(
         Row {
             TileBarLeftText(title = "Articles", subtitle = null)
         }
-        LazyColumn {
+        LazyColumn{
             items(allArticles) {
                 val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
                 val scope = rememberCoroutineScope()
@@ -69,7 +70,7 @@ fun ArticlesHomeScreenContent(
                     mutableStateOf(false)
                 }
                 TransparentButton(onClick = {showBottomSheet = true }) {
-                    Row {
+                    Row{
                         Box(modifier = Modifier.padding(end = 10.dp)) {
                             AsyncImage(model = it.thumbnailURL, contentDescription = "TEST")
                         }

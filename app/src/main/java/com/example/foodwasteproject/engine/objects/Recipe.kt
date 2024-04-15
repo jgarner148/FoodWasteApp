@@ -5,3 +5,10 @@ data class Recipe (
     val ingredients: List<String>,
     val description: String
 )
+
+fun List<Recipe>.toSubtitle(): String =
+    if(this.isEmpty()){
+        "No Recipes Yet"
+    }else{
+        this.joinToString { it.title }
+    }

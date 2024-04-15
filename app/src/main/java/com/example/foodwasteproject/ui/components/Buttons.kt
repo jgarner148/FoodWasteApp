@@ -46,7 +46,6 @@ fun TransparentButton(
 ) = Button(
     onClick = onClick,
     colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-    modifier = Modifier.padding(10.dp),
     shape = RoundedCornerShape(0.dp),
     content = content
 )

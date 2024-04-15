@@ -16,9 +16,7 @@ import org.koin.androidx.compose.getKoin
 class ArticlesHomeScreenViewModel(
     val articleDao: ArticleDao
 ) : ViewModel() {
-    init {
 
-    }
     val allArticles = getAllArticles()
 
     @JvmName("taskToGetAllArticles")

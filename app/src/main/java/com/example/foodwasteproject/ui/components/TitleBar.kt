@@ -70,8 +70,8 @@ fun TileBarLeftTextRightDate(
         },
         rightContent = {
             Column {
-                Text(text = startDate, fontSize = 20.sp, color = Color.Gray)
-                Text(text = endDate, fontSize = 20.sp, color = Color.Gray)
+                Text(text = startDate, fontSize = 20.sp, color = Color.LightGray)
+                Text(text = endDate, fontSize = 20.sp, color = Color.LightGray)
             }
         })
 }

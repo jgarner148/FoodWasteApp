@@ -20,6 +20,7 @@ import com.example.foodwasteproject.engine.objects.ArticleDao
 import com.example.foodwasteproject.engine.objects.CalendarDao
 import com.example.foodwasteproject.engine.objects.CalendarDayDao
 import com.example.foodwasteproject.engine.viewmodels.ArticlesHomeScreenViewModel
+import com.example.foodwasteproject.engine.viewmodels.CalendarScreenViewModel
 import com.example.foodwasteproject.ui.components.BottomBar
 import com.example.foodwasteproject.ui.components.StandardButton
 import com.example.foodwasteproject.ui.components.TileBarLeftText
@@ -47,16 +48,11 @@ class MainActivity : ComponentActivity() {
 
             startKoin{
                 modules(modules = module{
-                    single<ArticleDao>{
-                        localDatabase.articleDao()
-                    }
-                    single<CalendarDao>{
-                        localDatabase.calendarDao()
-                    }
-                    single<CalendarDayDao>{
-                        localDatabase.acalendarDayDao()
-                    }
+                    single<ArticleDao>{localDatabase.articleDao()}
+                    single<CalendarDao>{localDatabase.calendarDao()}
+                    single<CalendarDayDao>{localDatabase.calendarDayDao()}
                     viewModel{ArticlesHomeScreenViewModel(get())}
+                    viewModel{CalendarScreenViewModel(get())}
                 })
             }
             Scaffold(bottomBar = { BottomBar(navController = navController) }) {

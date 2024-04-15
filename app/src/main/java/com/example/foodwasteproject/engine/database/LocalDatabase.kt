@@ -17,5 +17,5 @@ abstract class LocalDatabase : RoomDatabase(){
 
     abstract fun calendarDao() : CalendarDao
 
-    abstract fun acalendarDayDao() : CalendarDayDao
+    abstract fun calendarDayDao() : CalendarDayDao
 }
