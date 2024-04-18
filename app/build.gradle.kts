@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
 
     id("com.google.devtools.ksp") version "1.9.22-1.0.17"
+    kotlin("plugin.serialization") version "1.9.23"
 }
 
 android {
@@ -11,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.foodwasteproject"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -92,6 +93,8 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+
+    implementation("com.google.mlkit:text-recognition:16.0.0")
 
 
 }

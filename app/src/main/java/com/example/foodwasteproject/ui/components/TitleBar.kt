@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.example.foodwasteproject.ui.theme.FoodWasteGreen
 
 @Composable
-fun SimpleTitleBar(
+private fun SimpleTitleBar(
     leftContent: @Composable ()-> Unit,
     rightContent: @Composable ()-> Unit
 ){

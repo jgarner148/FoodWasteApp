@@ -42,7 +42,8 @@ fun StandardButton(
 @Composable
 fun TransparentButton(
     onClick: () -> Unit,
-    content: @Composable RowScope.() -> Unit
+    modifier: Modifier = Modifier,
+    content: @Composable RowScope.() -> Unit,
 ) = Button(
     onClick = onClick,
     colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),

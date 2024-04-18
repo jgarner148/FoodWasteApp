@@ -2,6 +2,7 @@ package com.example.foodwasteproject.engine.database
 
 import androidx.room.TypeConverter
 import com.example.foodwasteproject.engine.objects.CalendarDay
+import com.example.foodwasteproject.engine.objects.Ingredient
 import com.example.foodwasteproject.engine.objects.Recipe
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -19,4 +20,10 @@ class Converters{
 
     @TypeConverter
     fun calendarDayToList(value: String) = Json.decodeFromString<List<CalendarDay>>(value)
+
+    @TypeConverter
+    fun ingredientToJson(value: List<Ingredient>) = Json.encodeToString(value)
+
+    @TypeConverter
+    fun ingredientToList(value: String) = Json.decodeFromString<List<Ingredient>>(value)
 }

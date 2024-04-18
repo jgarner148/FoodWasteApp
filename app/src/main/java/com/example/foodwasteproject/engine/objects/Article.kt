@@ -9,7 +9,9 @@ import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import coil.compose.AsyncImagePainter
+import kotlinx.serialization.Serializable
 
+@Serializable
 @Entity
 data class Article (
     @PrimaryKey val id: Int,
@@ -24,9 +26,15 @@ data class Article (
 @Dao
 interface ArticleDao{
     @Query("SELECT * FROM article")
-    suspend fun getAll(): List<Article>
+     fun getAll(): List<Article>
 
     @Insert
-    suspend fun insert(vararg article: Article)
+    fun insert(vararg article: Article)
+
+    @Query("DElETE FROM article")
+    fun clearArticles()
+
+    @Query("SELECT id FROM article")
+    fun getAllIDs() :List<Int>
 
 }

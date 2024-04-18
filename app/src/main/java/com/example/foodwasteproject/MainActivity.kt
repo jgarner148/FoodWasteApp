@@ -19,8 +19,11 @@ import com.example.foodwasteproject.engine.database.LocalDatabase
 import com.example.foodwasteproject.engine.objects.ArticleDao
 import com.example.foodwasteproject.engine.objects.CalendarDao
 import com.example.foodwasteproject.engine.objects.CalendarDayDao
+import com.example.foodwasteproject.engine.objects.IngredientsDao
+import com.example.foodwasteproject.engine.objects.RecipeDao
 import com.example.foodwasteproject.engine.viewmodels.ArticlesHomeScreenViewModel
 import com.example.foodwasteproject.engine.viewmodels.CalendarScreenViewModel
+import com.example.foodwasteproject.engine.viewmodels.RecipesViewModel
 import com.example.foodwasteproject.ui.components.BottomBar
 import com.example.foodwasteproject.ui.components.StandardButton
 import com.example.foodwasteproject.ui.components.TileBarLeftText
@@ -44,15 +47,18 @@ class MainActivity : ComponentActivity() {
             val localDatabase = Room.databaseBuilder(
                 applicationContext,
                 LocalDatabase::class.java, "database-name"
-            ).build()
+            ).allowMainThreadQueries().build()
 
             startKoin{
                 modules(modules = module{
                     single<ArticleDao>{localDatabase.articleDao()}
                     single<CalendarDao>{localDatabase.calendarDao()}
                     single<CalendarDayDao>{localDatabase.calendarDayDao()}
+                    single<IngredientsDao>{localDatabase.ingredientsDao()}
+                    single<RecipeDao>{localDatabase.recipeDao()}
                     viewModel{ArticlesHomeScreenViewModel(get())}
-                    viewModel{CalendarScreenViewModel(get())}
+                    viewModel{CalendarScreenViewModel(get(), get())}
+                    viewModel{RecipesViewModel(get(), get())}
                 })
             }
             Scaffold(bottomBar = { BottomBar(navController = navController) }) {

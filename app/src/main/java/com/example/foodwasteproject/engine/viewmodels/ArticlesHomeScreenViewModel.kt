@@ -1,17 +1,10 @@
 package com.example.foodwasteproject.engine.viewmodels
 
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.room.Room
-import coil.compose.AsyncImage
-import com.example.foodwasteproject.engine.database.LocalDatabase
 import com.example.foodwasteproject.engine.objects.Article
 import com.example.foodwasteproject.engine.objects.ArticleDao
-import kotlinx.coroutines.launch
-import org.koin.androidx.compose.getKoin
+import kotlin.random.Random
 
 class ArticlesHomeScreenViewModel(
     val articleDao: ArticleDao
@@ -21,67 +14,51 @@ class ArticlesHomeScreenViewModel(
 
     @JvmName("taskToGetAllArticles")
     private fun getAllArticles(): List<Article>{
-        val result = MutableLiveData<List<Article>>()
-        viewModelScope.launch {
-            val fetchedresult = articleDao.getAll()
-            if(fetchedresult.isEmpty()){
-                setUpArticles()
-                val secondFetch = articleDao.getAll()
-                result.postValue(secondFetch)
-            }else {
-                result.postValue(fetchedresult)
-            }
+        val fetchedresult = articleDao.getAll()
+        return if(fetchedresult.isEmpty()){
+            setUpArticles()
+            val secondFetch = articleDao.getAll()
+            secondFetch
+        }else {
+            fetchedresult
         }
-        return result.value ?: listOf(
-            Article(
-                id = 15,
-                title = "One",
-                subtitle = "Fail",
-                publishDate = "10/10/2020",
-                thumbnailURL = "https://picsum.photos/200",
-                bannerImageURL = "https://picsum.photos/1920/1080",
-                content = LoremIpsum(250).values.first()
-            ),
-            Article(
-                id = 16,
-                title = "Test",
-                subtitle = "Two",
-                publishDate = "10/10/2020",
-                thumbnailURL = "https://picsum.photos/200",
-                bannerImageURL = "https://picsum.photos/1920/1080",
-                content = LoremIpsum(250).values.first()
-            ),
-            Article(
-                id = 17,
-                title = "Test",
-                subtitle = "Three",
-                publishDate = "10/10/2020",
-                thumbnailURL = "https://picsum.photos/200",
-                bannerImageURL = "https://picsum.photos/1920/1080",
-                content = LoremIpsum(250).values.first()
-            ),
-            Article(
-                id = 18,
-                title = "Test",
-                subtitle = "Four",
-                publishDate = "10/10/2020",
-                thumbnailURL = "https://picsum.photos/200",
-                bannerImageURL = "https://picsum.photos/1920/1080",
-                content = LoremIpsum(250).values.first()
+        }
+
+    private fun setUpArticles() {
+        repeat(15) {
+            articleDao.insert(
+                Article(
+                    id = createID(),
+                    title = LoremIpsum(Random.nextInt(2, 6)).values.first(),
+                    subtitle = LoremIpsum(Random.nextInt(2, 10)).values.first(),
+                    publishDate = randomDate(),
+                    thumbnailURL = "https://picsum.photos/200",
+                    bannerImageURL = "https://picsum.photos/1920/1080",
+                    content = LoremIpsum(350).values.first()
+                )
             )
-        )
+        }
     }
 
-    fun setUpArticles() {
-        val testArticle = Article(
-            id = 1,
-            title = "TestTitle",
-            subtitle = "TestSub",
-            publishDate = "10/10/2020",
-            thumbnailURL = "https://picsum.photos/200",
-            bannerImageURL = "https://picsum.photos/200",
-            content = "TEST"
-        )
-        viewModelScope.launch{articleDao.insert(testArticle)}
+    private fun randomDate() : String{
+        val day = Random.nextInt(1,27).toString()
+        val month = Random.nextInt(1,12).toString()
+        val year = Random.nextInt(2020,2024).toString()
+        return "$day/$month/$year"
     }
+
+    private fun createID() : Int{
+        val allIDs = articleDao.getAllIDs()
+        var unique = false
+        var id = Random.nextInt(1000, 9999)
+        while (!unique){
+            if(allIDs.contains(id)){
+                id = Random.nextInt(1000, 9999)
+            }else{
+                unique = true
+            }
+        }
+        return id
+    }
+
 }

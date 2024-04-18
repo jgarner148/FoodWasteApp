@@ -7,10 +7,12 @@ import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.TypeConverter
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
+@Serializable
 @Entity
 data class Calendar (
     @PrimaryKey val id: Int,
@@ -22,13 +24,23 @@ data class Calendar (
 @Dao
 interface CalendarDao{
     @Query("SELECT * FROM calendar")
-    suspend fun getAll(): Calendar
+    fun getAll(): Calendar
 
     @Insert
-    suspend fun insert(vararg calendar: Calendar)
+    fun insert(vararg calendar: Calendar)
+
+    @Query("DElETE FROM calendar")
+    fun clearCalendar()
+
+    @Query("UPDATE calendar SET Days = :newDays")
+    fun AddRecipe(newDays: List<CalendarDay>)
+
+    @Query("SELECT id FROM calendar")
+    fun getAllIDs() :List<Int>
 
 }
 
+@Serializable
 @Entity
 data class CalendarDay(
     @PrimaryKey val id: Int,
@@ -39,10 +51,11 @@ data class CalendarDay(
 @Dao
 interface CalendarDayDao{
     @Query("SELECT * FROM calendarDay")
-    suspend fun getAll(): CalendarDay
+    fun getAll(): CalendarDay
 
     @Insert
-    suspend fun insert(vararg calendar: Calendar)
+    fun insert(vararg calendar: Calendar)
 
 }
+
 
