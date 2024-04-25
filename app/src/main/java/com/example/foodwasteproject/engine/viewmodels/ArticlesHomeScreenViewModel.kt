@@ -47,7 +47,7 @@ class ArticlesHomeScreenViewModel(
         return "$day/$month/$year"
     }
 
-    private fun createID() : Int{
+    private fun createID() : Long{
         val allIDs = articleDao.getAllIDs()
         var unique = false
         var id = Random.nextInt(1000, 9999)
@@ -58,7 +58,7 @@ class ArticlesHomeScreenViewModel(
                 unique = true
             }
         }
-        return id
+        return id.toLong()
     }
 
 }

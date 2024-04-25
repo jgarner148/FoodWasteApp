@@ -1,5 +1,6 @@
 package com.example.foodwasteproject.ui.components
 
+import android.media.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.foodwasteproject.ui.theme.FoodWasteGreen
@@ -48,7 +50,8 @@ fun TransparentButton(
     onClick = onClick,
     colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
     shape = RoundedCornerShape(0.dp),
-    content = content
+    content = content,
+    modifier = modifier
 )
 
 @Composable
@@ -73,6 +76,23 @@ fun TitleBarButton(
         fontFamily = Madimi
     )
 }
+
+@Composable
+fun TitleBarImageButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable RowScope.() -> Unit,
+) = Button(
+    onClick = onClick,
+    colors = ButtonDefaults.buttonColors(
+        containerColor = Color.White,
+        contentColor = Color.Black,
+        disabledContainerColor = Color.Gray,
+        disabledContentColor = Color.Black),
+    shape = RoundedCornerShape(15.dp),
+    content = content,
+    modifier = modifier
+)
 
 
 @Preview(name = "Standard Button Preview")

@@ -76,10 +76,6 @@ enum class BottomNavDestination(
         ArticlesHomeScreenDestination,
         4
     ),
-    Me(
-        MeScreenDestination,
-        5
-    ),
     ;
     @Composable
     fun icon(): Int = when (this) {
@@ -87,7 +83,6 @@ enum class BottomNavDestination(
         Cupboard -> R.drawable.baseline_space_dashboard_24
         Calendar -> R.drawable.baseline_calendar_today_24
         Articles -> R.drawable.baseline_description_24
-        Me -> R.drawable.baseline_receipt_24
     }
 
     fun label(): String = when (this) {
@@ -95,7 +90,6 @@ enum class BottomNavDestination(
         Cupboard -> "Cupboard"
         Calendar -> "Calendar"
         Articles -> "Articles"
-        Me -> "Me"
     }
 }
 

@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Entity
 data class Article (
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: Long,
     @ColumnInfo("Title") val title: String,
     @ColumnInfo("Subtitle") val subtitle: String,
     @ColumnInfo("Publish_Date") val publishDate: String,

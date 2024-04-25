@@ -36,6 +36,7 @@ import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -66,20 +67,22 @@ import org.koin.androidx.compose.getViewModel
 @Destination
 fun CalendarScreen() {
     val viewModel = getViewModel<CalendarScreenViewModel>()
-    CalendarScreenContent(wholeCalendar = viewModel.wholeCalendar, viewModel.allRecipes) {
-        recipe: Recipe, day: Int ->
+    CalendarScreenContent(wholeCalendar = viewModel.wholeCalendar, viewModel.allRecipes, randomRecipe = viewModel.generateRecipeSuggestion(), addTo = {
+        recipe: Recipe, day: Long ->
         viewModel.addRecipe(
             recipe,
             day
         )
     }
+    )
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalendarScreenContent(
     wholeCalendar: Calendar,
     allRecipes: List<Recipe>,
-    addTo: (Recipe, Int) -> Unit
+    addTo: (Recipe, Long) -> Unit,
+    randomRecipe: Recipe
 ) {
     Column {
         Row {
@@ -90,6 +93,18 @@ fun CalendarScreenContent(
                 endDate = wholeCalendar.endDate
             )
         }
+        Row(modifier = Modifier.fillMaxWidth()){
+            Text(
+                text = if (randomRecipe.title != "") {
+                    "Have you considered adding " + randomRecipe.title + " to your calendar this week?"
+                } else {
+                    "Add some recipes to get started"
+                },
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth().padding(5.dp),
+                color = FoodWasteGreen
+            )
+        }
         LazyColumn {
             items(wholeCalendar.days) {
                 val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -98,9 +113,10 @@ fun CalendarScreenContent(
                     mutableStateOf(false)
                 }
                 Row(modifier = Modifier.padding(10.dp)) {
+                    val recipes = remember { mutableStateOf(it.recipes.toSubtitle()) }
                     Column {
                         Text(text = it.name, fontWeight = FontWeight.Bold, fontSize = 30.sp)
-                        Text(text = it.recipes.toSubtitle(), fontStyle = FontStyle.Italic)
+                        Text(text = recipes.value, fontStyle = FontStyle.Italic)
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     StandardButton(
@@ -143,8 +159,8 @@ fun CalendarAddBottomSheet(
     onClick: () -> Unit,
     sheetState: SheetState,
     recipes: List<Recipe>,
-    addTo: (Recipe, Int) -> Unit,
-    day: Int
+    addTo: (Recipe, Long) -> Unit,
+    day: Long
 ){
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,

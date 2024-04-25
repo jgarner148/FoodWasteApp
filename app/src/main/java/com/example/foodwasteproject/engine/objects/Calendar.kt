@@ -15,7 +15,7 @@ import kotlinx.serialization.json.Json
 @Serializable
 @Entity
 data class Calendar (
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: Long,
     @ColumnInfo("Start_Date") val startDate: String,
     @ColumnInfo("End_Date") val endDate: String,
     @ColumnInfo("Days") val days: List<CalendarDay>
@@ -43,7 +43,7 @@ interface CalendarDao{
 @Serializable
 @Entity
 data class CalendarDay(
-    @PrimaryKey val id: Int,
+    @PrimaryKey val id: Long,
     @ColumnInfo("Name")val name: String,
     @ColumnInfo("Recipes")val recipes: List<Recipe>
 )

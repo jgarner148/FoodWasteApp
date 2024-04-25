@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import com.example.foodwasteproject.engine.objects.Calendar
 import com.example.foodwasteproject.engine.objects.CalendarDao
 import com.example.foodwasteproject.engine.objects.CalendarDay
+import com.example.foodwasteproject.engine.objects.CupboardDao
+import com.example.foodwasteproject.engine.objects.IngredientsDao
 import com.example.foodwasteproject.engine.objects.Recipe
 import com.example.foodwasteproject.engine.objects.RecipeDao
 import java.text.DateFormat
@@ -16,14 +18,13 @@ import java.util.Calendar as JavaUtilCalendar
 
 class CalendarScreenViewModel(
     val calendarDao: CalendarDao,
-    val recipesDao: RecipeDao
+    val recipesDao: RecipeDao,
 ) : ViewModel() {
 
     val wholeCalendar = getCalendar()
     val allRecipes = getAllRecipes()
 @JvmName("getWholeCalendarMethod")
     private fun getCalendar(): Calendar = try {
-    calendarDao.clearCalendar()
             val result = calendarDao.getAll()
             val sdf = SimpleDateFormat("dd - MMM")
             val endDate: Date = sdf.parse(result.endDate)
@@ -63,7 +64,7 @@ class CalendarScreenViewModel(
         )
     }
     @JvmName("addRecipeMethod")
-    fun addRecipe(recipe: Recipe, id: Int){
+    fun addRecipe(recipe: Recipe, id: Long){
         var newDays = emptyList<CalendarDay>()
         wholeCalendar.days.forEach {
             newDays = if(it.id == id){
@@ -75,8 +76,8 @@ class CalendarScreenViewModel(
         calendarDao.AddRecipe(newDays)
     }
 
-    fun createCalendarID() : Int{
-        val formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm")
+    private fun createCalendarID() : Long{
+        val formatter = DateTimeFormatter.ofPattern("yyMMdd")
         val date = LocalDateTime.now().format(formatter)
 
         val allIDs = calendarDao.getAllIDs()
@@ -90,12 +91,11 @@ class CalendarScreenViewModel(
             }
         }
 
-        val finalID = date + id.toString()
-        return finalID.toInt()
+        return "$date$id".toLong()
     }
 
-    fun createDayID(day:Int) : Int{
-        val formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm")
+    private fun createDayID(day:Int) : Long{
+        val formatter = DateTimeFormatter.ofPattern("yyMMdd")
         val date = LocalDateTime.now().format(formatter)
 
         val allIDs = calendarDao.getAllIDs()
@@ -109,7 +109,21 @@ class CalendarScreenViewModel(
             }
         }
 
-        val finalID = day.toString() + date + id.toString()
-        return finalID.toInt()
+        val finalID = day.toString() + date.toString() + id.toString()
+        return finalID.toLong()
+    }
+
+    fun generateRecipeSuggestion() :Recipe{
+        return try {
+
+            allRecipes.random()
+        }catch (e: Exception){
+            Recipe(
+                "",
+                "",
+                emptyList(),
+                ""
+            )
+        }
     }
 }

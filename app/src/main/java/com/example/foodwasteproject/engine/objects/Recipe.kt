@@ -2,6 +2,7 @@ package com.example.foodwasteproject.engine.objects
 
 import androidx.room.ColumnInfo
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
@@ -23,12 +24,17 @@ interface RecipeDao{
 
     @Insert
     fun insert(vararg recipe: Recipe)
+
+    @Query("SELECT id FROM recipe")
+    fun getAllIDs() :List<String>
+
+    @Delete
+    fun deleteRecipe(recipe: Recipe)
 }
 
 fun List<Recipe>.toSubtitle(): String =
     if(this.isEmpty()){
         "No Recipes Yet"
     }else{
-        "TEST"
-        //this.joinToString { it.title }
+        this.joinToString { it.title }
     }

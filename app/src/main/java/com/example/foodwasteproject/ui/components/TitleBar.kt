@@ -1,8 +1,10 @@
 package com.example.foodwasteproject.ui.components
 
+import android.media.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -81,7 +83,8 @@ fun TileBarLeftTextWithButton(
     title: String,
     subtitle: String? = null,
     buttonText: String,
-    buttonAction: ()-> Unit
+    buttonAction: ()-> Unit,
+    isActive: Boolean = true,
 ){
     SimpleTitleBar(
         leftContent = {
@@ -97,9 +100,33 @@ fun TileBarLeftTextWithButton(
         },
         rightContent = {
             Column {
-                TitleBarButton(text = buttonText, isActive = true, onClick = buttonAction, modifier = Modifier.padding(10.dp))
+                TitleBarButton(text = buttonText, isActive = isActive, onClick = buttonAction, modifier = Modifier.padding(10.dp))
             }
         })
+}
+
+@Composable
+fun TitleBarLeftTextWithImageButton(
+    title: String,
+    subtitle: String? = null,
+    buttonImage: @Composable RowScope.() -> Unit,
+    buttonAction: ()-> Unit
+){
+    SimpleTitleBar(leftContent = { Column {
+        Text(
+            text = title,
+            fontSize = 40.sp,
+            color = Color.White)
+        if (subtitle != null) {
+            Text(text = subtitle)
+        }
+    }}, rightContent = {
+        Column {
+            TitleBarImageButton(onClick = buttonAction) {
+                buttonImage()
+            }
+        }
+    })
 }
 
 @Preview(name = "Title Bar Preview")

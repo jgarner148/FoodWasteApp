@@ -19,10 +19,12 @@ import com.example.foodwasteproject.engine.database.LocalDatabase
 import com.example.foodwasteproject.engine.objects.ArticleDao
 import com.example.foodwasteproject.engine.objects.CalendarDao
 import com.example.foodwasteproject.engine.objects.CalendarDayDao
+import com.example.foodwasteproject.engine.objects.CupboardDao
 import com.example.foodwasteproject.engine.objects.IngredientsDao
 import com.example.foodwasteproject.engine.objects.RecipeDao
 import com.example.foodwasteproject.engine.viewmodels.ArticlesHomeScreenViewModel
 import com.example.foodwasteproject.engine.viewmodels.CalendarScreenViewModel
+import com.example.foodwasteproject.engine.viewmodels.CupboardScreenViewModel
 import com.example.foodwasteproject.engine.viewmodels.RecipesViewModel
 import com.example.foodwasteproject.ui.components.BottomBar
 import com.example.foodwasteproject.ui.components.StandardButton
@@ -56,9 +58,11 @@ class MainActivity : ComponentActivity() {
                     single<CalendarDayDao>{localDatabase.calendarDayDao()}
                     single<IngredientsDao>{localDatabase.ingredientsDao()}
                     single<RecipeDao>{localDatabase.recipeDao()}
+                    single<CupboardDao>{localDatabase.cupboardDao()}
                     viewModel{ArticlesHomeScreenViewModel(get())}
                     viewModel{CalendarScreenViewModel(get(), get())}
                     viewModel{RecipesViewModel(get(), get())}
+                    viewModel { CupboardScreenViewModel(get(), get()) }
                 })
             }
             Scaffold(bottomBar = { BottomBar(navController = navController) }) {

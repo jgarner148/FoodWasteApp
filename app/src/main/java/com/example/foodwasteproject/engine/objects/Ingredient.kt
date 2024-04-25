@@ -22,4 +22,7 @@ interface IngredientsDao{
 
     @Insert
     fun insert(vararg ingredient: Ingredient)
+
+    @Query("SELECT id FROM ingredient")
+    fun getAllIDs() :List<String>
 }

@@ -96,5 +96,14 @@ dependencies {
 
     implementation("com.google.mlkit:text-recognition:16.0.0")
 
+    implementation("com.google.accompanist:accompanist-permissions:0.31.6-rc")
+
+    val camerax_version = "1.3.0-beta02"
+
+    implementation("androidx.camera:camera-camera2:$camerax_version")
+    implementation("androidx.camera:camera-lifecycle:$camerax_version")
+    implementation("androidx.camera:camera-view:$camerax_version")
+    implementation("androidx.camera:camera-extensions:$camerax_version")
+
 
 }
