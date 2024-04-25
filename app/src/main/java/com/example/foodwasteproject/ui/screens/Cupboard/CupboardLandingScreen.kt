@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.foodwasteproject.R
 import com.example.foodwasteproject.engine.objects.Ingredient
 import com.example.foodwasteproject.engine.viewmodels.CupboardScreenViewModel
@@ -93,8 +94,12 @@ fun CupboardLandingScreenContent(
                 }
             }else{
                 item {
-                    Row(modifier = Modifier.fillMaxWidth()){
-                        Text(text = "USE THE ADD BUTTON TO ADD CURRENT RECIPES TO YOUR CUPBOARD", textAlign = TextAlign.Center)
+                    Row(modifier = Modifier.fillMaxWidth().padding(10.dp)){
+                        Text(text = "USE THE ADD BUTTON TO ADD CURRENT RECIPES TO YOUR CUPBOARD",
+                            textAlign = TextAlign.Center,
+                            fontSize = 15.sp,
+                            color = FoodWasteGreen
+                        )
                     }
                 }
             }

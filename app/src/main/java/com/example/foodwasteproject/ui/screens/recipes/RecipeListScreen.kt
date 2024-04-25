@@ -87,38 +87,53 @@ fun RecipeListScreenContent(
         TileBarLeftTextWithButton(title = "Your Recipes", subtitle = null, buttonText = "ADD", buttonAction = {showwAddBottomSheet = true})
 
         LazyColumn {
-            items(allRecipes){
-                Row(modifier = Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
-                    Column {
-                        Text(text = it.title)
+            if (allRecipes.isNotEmpty()) {
+                items(allRecipes) {
+                    Row(
+                        modifier = Modifier.padding(10.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            Text(text = it.title)
+                        }
+                        Spacer(modifier = Modifier.weight(1f))
+                        StandardButton(text = "View", isActive = true, onClick = {
+                            currentRecipe = it
+                            showwViewBottomSheet = true
+                        })
                     }
-                    Spacer(modifier = Modifier.weight(1f))
-                    StandardButton(text = "View", isActive = true, onClick = {
-                        currentRecipe = it
-                        showwViewBottomSheet = true
-                    })
+                    Divider(thickness = 1.dp, color = Color.Black)
+                    if (showwViewBottomSheet) {
+                        ViewRecipeBottomSheet(
+                            onDismissRequest = {
+                                scope.launch { viewSheetState.hide() }.invokeOnCompletion {
+                                    if (!viewSheetState.isVisible) {
+                                        showwViewBottomSheet = false
+                                    }
+                                }
+                            },
+                            onClick = {
+                                deleteRecipe(currentRecipe)
+                                scope.launch { viewSheetState.hide() }.invokeOnCompletion {
+                                    if (!viewSheetState.isVisible) {
+                                        showwViewBottomSheet = false
+                                    }
+                                }
+                            },
+                            sheetState = viewSheetState,
+                            recipe = currentRecipe
+                        )
+                    }
                 }
-                Divider(thickness = 1.dp, color = Color.Black)
-                if (showwViewBottomSheet) {
-                    ViewRecipeBottomSheet(
-                        onDismissRequest = {
-                            scope.launch { viewSheetState.hide() }.invokeOnCompletion {
-                                if (!viewSheetState.isVisible) {
-                                    showwViewBottomSheet = false
-                                }
-                            }
-                        },
-                        onClick = {
-                            deleteRecipe(currentRecipe)
-                            scope.launch { viewSheetState.hide() }.invokeOnCompletion {
-                                if (!viewSheetState.isVisible) {
-                                    showwViewBottomSheet = false
-                                }
-                            }
-                        },
-                        sheetState = viewSheetState,
-                        recipe = currentRecipe
-                    )
+            }else{
+                item {
+                    Row(modifier = Modifier.fillMaxWidth().padding(10.dp)){
+                        Text(text = "USE THE ADD BUTTON TO CREATE A RECIPE",
+                            textAlign = TextAlign.Center,
+                            fontSize = 15.sp,
+                            color = FoodWasteGreen
+                        )
+                    }
                 }
             }
         }
